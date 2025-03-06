@@ -11,13 +11,200 @@ Place your class diagrams below. Make sure you check the file in the browser on 
 ### Provided Code
 
 Provide a class diagram for the provided code as you read through it.  For the classes you are adding, you will create them as a separate diagram, so for now, you can just point towards the interfaces for the provided code diagram.
+```mermaid
+---
+BGArenaPlanner
+---
+classDiagram
+    direction TB
+    class BGArenaPlanner {
+        - static final String DEFAULT_COLLECTION
+        - BGArenaPlanner()
+        + static void main(String[] args)
+    }
 
+    class IPlanner {
+        + filter(String filter) Stream~BoardGame~
+        + filter(String filter, GameData sortOn) Stream~BoardGame~
+        + filter(String filter, GameData sortOn, boolean ascending) Stream~BoardGame~
+    }
+
+    class Planner {
+        + Planner(Set~BoardGame~ games)
+        + filter(String filter) Stream~BoardGame~
+        + filter(String filter, GameData sortOn) Stream~BoardGame~
+        + filter(String filter, GameData sortOn, boolean ascending) Stream~BoardGame~
+        + reset() void
+    }
+
+    class IGameList {
+        + String ADD_ALL
+        + List~String~ getGameNames()
+        + clear() void
+        + count() int
+        + saveGame(String filename) void
+        + addToList(String str, Stream~BoardGame~ filtered) void
+        + removeFromList(String str) void
+    }
+
+    class GameList {
+        + GameList()
+        + getGameNames() List~String~
+        + clear() void
+        + count() int
+        + saveGame(String filename) void
+        + addToList(String str, Stream~BoardGame~ filtered) void
+        + removeFromList(String str) void
+    }
+
+    class ConsoleApp {
+        - static final Scanner IN
+        - static final String DEFAULT_FILENAME
+        - static final Random RND
+        - Scanner current
+        - final IGameList gameList
+        - final IPlanner planner
+        + ConsoleApp(IGameList gameList, IPlanner planner)
+        + start() void
+        - randomNumber() void
+        - processHelp() void
+        - processFilter() void
+        - static printFilterStream(Stream~BoardGame~ games, GameData sortON) void
+        - processListCommands() void
+        - printCurrentList() void
+        - nextCommand() ConsoleText
+        - remainder() String
+        - static getInput(String format, Object... args) String
+        - static printOutput(String format, Object... output) void
+    }
+
+    class ConsoleText {
+        WELCOME, HELP, INVALID, GOODBYE, PROMPT,NO_FILTER, NO_GAMES_LIST,
+        FILTERED_CLEAR, LIST_HELP, FILTER_HELP,INVALID_LIST, EASTER_EGG,
+        CMD_EASTER_EGG, CMD_EXIT, CMD_HELP, CMD_QUESTION, CMD_FILTER,
+        CMD_LIST,CMD_SHOW, CMD_ADD, CMD_REMOVE, CMD_CLEAR, CMD_SAVE,
+        CMD_OPTION_ALL, CMD_SORT_OPTION, CMD_SORT_OPTION_DIRECTION_ASC,
+        CMD_SORT_OPTION_DIRECTION_DESC
+        - static final Properties CTEXT
+        + toString() String
+        + fromString(String str) ConsoleText
+    }
+
+    class GamesLoader {
+        - static final String DELIMITER
+        - GamesLoader()
+        + static loadGamesFile(String filename) Set~BoardGame~
+        - static toBoardGame(String line, Map~GameData, Integer~ columnMap) BoardGame
+        - static processHeader(String header) Map~GameData, Integer~
+    }
+
+    class BoardGame {
+        - final String name
+        - final int id
+        - final int minPlayers
+        - final int maxPlayers
+        - final int maxPlayTime
+        - final int minPlayTime
+        - final double difficulty
+        - final int rank
+        - final double averageRating
+        - final int yearPublished
+        + BoardGame(String name, int id, int minPlayers, int maxPlayers, int minPlayTime, int maxPlayTime, double difficulty, int rank, double averageRating, int yearPublished)
+        + getName() String
+        + getId() int
+        + getMinPlayers() int
+        + getMaxPlayers() int
+        + getMaxPlayTime() int
+        + getMinPlayTime() int
+        + getDifficulty() double
+        + getRank() int
+        + getRating() double
+        + getYearPublished() int
+        + toStringWithInfo(GameData col) String
+        + toString() String
+        + equals(Object obj) boolean
+        + hashCode() int
+        + static main(String[] args) void
+    }
+
+    class GameData {
+        - final columnName String
+        NAME("objectname"), ID("objectid") ,
+        RATING("average"), DIFFICULTY("avgweight") ,
+        RANK("rank"), MIN_PLAYERS("minplayers"), MAX_PLAYERS("maxplayers") ,
+        MIN_TIME("minplaytime"), MAX_TIME("maxplaytime"), YEAR("yearpublished")
+        + GameData(String columnName)
+        + getColumnName() String
+        + static fromColumnName(String columnName) GameData
+        + static fromString(String name) GameData
+    }
+
+    class Operations {
+        - final String operator
+        EQUALS("=="), NOT_EQUALS("!="), GREATER_THAN("&gt;"), LESS_THAN("&lt;"), GREATER_THAN_EQUALS("&gt;=") ,
+        LESS_THAN_EQUALS("&lt;="), CONTAINS("~=")
+        + Operations(String operator)
+        + getOperator() String
+        + static fromOperator(String operator) Operations
+        + static getOperatorFromStr(String str) Operations
+    }
+
+    <<interface>> IPlanner
+    <<interface>> IGameList
+    <<enum>> ConsoleText
+    <<enum>> GameData
+    <<enum>> Operations
+
+    BGArenaPlanner o-- ConsoleApp
+    BGArenaPlanner --> IGameList
+    ConsoleApp o-- IPlanner
+    ConsoleApp o-- IGameList
+    BGArenaPlanner --> IPlanner
+    BGArenaPlanner --> GamesLoader
+    IGameList <|.. GameList : implements
+    IPlanner <|.. Planner : implements
+    IPlanner --> Operations : uses
+    ConsoleApp *-- ConsoleText
+    BoardGame <-- GamesLoader : creates
+    GamesLoader --> GameData : uses
+    ConsoleApp --> GameData : uses
+    BoardGame --> GameData : uses
+    Planner o-- BoardGame
+
+```
 
 
 ### Your Plans/Design
 
 Create a class diagram for the classes you plan to create. This is your initial design, and it is okay if it changes. Your starting points are the interfaces. 
+```mermaid
+---
+BGArenaPlanner
+---
+classDiagram
+    class Planner {
 
+    }
+    class Filter {
+        - String field
+        - Operations operator
+        - int value
+        + getField() String
+        + getOperator() Operations
+        + getValue() int
+        + doFilter(Stream~BoardGame~) Stream~BoardGame~
+    }
+    class Sort {
+        - String sortBy
+        - String inOrder
+        + getSortBy() String
+        + getInOrder() String
+        + doSort(Stream~BoardGame~) Stream~BoardGame~
+    }
+
+    Planner o-- Filter
+    Planner o-- Sort
+```
 
 
 
@@ -36,8 +223,23 @@ Write a test (in english) that you can picture for the class diagram you have cr
 
 You should feel free to number your brainstorm. 
 
-1. Test 1..
-2. Test 2..
+1. Test Filter constructor
+2. Test Filter.getField() returns corresponding value
+3. Test Filter.getOperator() returns corresponding value
+4. Test Filter.getValue() returns corresponding value
+5. Test Filter.doFilter() in happy path that returns corresponding value (one and multiple filters)
+6. Test Filter.doFilter() with empty input
+7. Test Filter.doFilter() without valid return value
+8. Test Filter.doFilter() with duplicate filters
+9. Test Filter.doFilter() with invalid filter fields
+10. Test Sort constructor
+11. Test Sort.getSortBy() returns corresponding value
+12. Test Sort.getInOrder() returns corresponding value
+13. Test Sort.doSort() in happy path that returns corresponding value (with or without sortBy, inOrder)
+14. Test Sort.doSort() with empty input
+15. Test Sort.doSort() without valid return value
+16. Test Sort.doSort() with duplicate arguments
+17. Test Sort.doSort() with invalid field value
 
 
 
@@ -50,7 +252,6 @@ For the final design, you just need to do a single diagram that includes both th
 
 > [!WARNING]
 > If you resubmit your assignment for manual grading, this is a section that often needs updating. You should double check with every resubmit to make sure it is up to date.
-
 
 
 
