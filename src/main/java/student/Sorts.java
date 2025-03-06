@@ -2,7 +2,22 @@ package student;
 
 import java.util.Comparator;
 
-public class Sorts {
+/**
+ * A utility class for getting sort Comparator of BoardGame.
+ */
+public final class Sorts {
+    /**
+     * Private constructor for Sorts to prevent instantiation.
+     */
+    private Sorts() {
+    }
+
+    /**
+     * A public static method for getting sort Comparator of BoardGame.
+     * @param sortOn The column to sort the results on.
+     * @param asc Whether to sort the results in ascending order or descending order.
+     * @return  Comparator of BoardGame
+     */
     public static Comparator<BoardGame> getSortType(GameData sortOn, boolean asc) {
         switch (sortOn) {
             case MAX_PLAYERS:

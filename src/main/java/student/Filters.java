@@ -1,19 +1,30 @@
 package student;
 
 /**
- *
+ * A utility class for filtering BoardGame objects based on various attributes.
  */
-public class Filters {
-    private Filters() {}
+public final class Filters {
+    /**
+     * Private constructor for Filters to prevent instantiation.
+     */
+    private Filters() {
+    }
 
+    /**
+     * A public static filter method for filtering boardgames.
+     *
+     * @param game   the board game
+     * @param column column of board games
+     * @param op     operator for operations
+     * @param value  value for operations
+     * @return true if matching the filter, else false
+     */
     public static boolean filter(BoardGame game, GameData column,
                                  Operations op, String value) {
         switch (column) {
             case NAME:
-                // filter the name
                 return filterString(game.getName(), op, value);
             case MAX_PLAYERS:
-                // filter based on max-players
                 return filterNumber(game.getMaxPlayers(), op, value);
             case MIN_PLAYERS:
                 return filterNumber(game.getMinPlayers(), op, value);
@@ -34,9 +45,18 @@ public class Filters {
         }
     }
 
-    public static boolean filterString(String gameData, Operations op, String value) {
+    /**
+     * A private static method filterString for string filter operations.
+     * Only available for column NAME.
+     *
+     * @param gameData the attribute of board game
+     * @param op       the operator for operation
+     * @param value    the value for operation
+     * @return true if matching the filter, else false
+     */
+    private static boolean filterString(String gameData, Operations op, String value) {
         // Case-insensitive handling and Removing spaces in gameData
-        String lowerGameDataWoSPaces= gameData.toLowerCase().replaceAll(" ", "");
+        String lowerGameDataWoSPaces = gameData.toLowerCase().replaceAll(" ", "");
         // Case-insensitive handling
         String lowerValue = value.toLowerCase();
         switch (op) {
@@ -59,14 +79,21 @@ public class Filters {
         }
     }
 
-    public static boolean filterNumber(double gameData, Operations op, String value) {
+    /**
+     * A private static method filterNumber for number filter operations.
+     *
+     * @param gameData the attribute of board game
+     * @param op       the operator for operation
+     * @param value    the value for operation
+     * @return true if matching the filter, else false
+     */
+    private static boolean filterNumber(double gameData, Operations op, String value) {
         double val;
         try {
             val = Double.parseDouble(value);
         } catch (NumberFormatException e) {
             return false; // Return false to indicate the comparison is not valid
         }
-
         switch (op) {
             case EQUALS:
                 return gameData == val;

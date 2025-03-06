@@ -3,46 +3,56 @@ package student;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
 import static java.lang.Math.min;
-import static org.apache.commons.lang3.math.NumberUtils.max;
 
+/**
+ * A public GameList class implements IGameList.
+ * Stores and modifies data in games list.
+ */
 public class GameList implements IGameList {
-    Set<String> listOfGames;
+    /** A set of names of games.*/
+    private Set<String> listOfGames;
+
     /**
      * Constructor for the GameList.
      */
     public GameList() {
-        // throw new UnsupportedOperationException("Unimplemented constructor 'GameList'");
+        // Instantiates a Set to store names of games.
         this.listOfGames = new TreeSet<>(String::compareTo);
     }
 
+    /**
+     * Get list version of Games.
+     * @return  list version of Games
+     */
     @Override
     public List<String> getGameNames() {
-        // TODO Auto-generated method stub
-        // list version of Games
         return List.copyOf(this.listOfGames);
     }
 
+    /**
+     * Clear the list of games.
+     */
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-        this.listOfGames = new HashSet<>();
+        this.listOfGames = new TreeSet<>(String::compareTo);
     }
 
+    /**
+     * Get the size of games list.
+     * @return  the size of games list
+     */
     @Override
     public int count() {
-        // TODO Auto-generated method stub
         return this.listOfGames.size();
     }
 
+    /**
+     * Save a file consists of list of games.
+     * @param filename The name of the file to save the list to
+     */
     @Override
     public void saveGame(String filename) {
         // TODO Auto-generated method stub
@@ -57,13 +67,18 @@ public class GameList implements IGameList {
         }
     }
 
+    /**
+     * Adds a single game or multiple games to the games list.
+     * @param str      the string to parse and add games to the list
+     * @param filtered the filtered list to use as a basis for adding
+     * @throws IllegalArgumentException if the argument is illegal
+     */
     @Override
     public void addToList(String str, Stream<BoardGame> filtered) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
         List<BoardGame> filteredList = filtered.toList();
         List<String> filteredLowerList = filteredList.stream()
                 .map(game -> game.getName().replaceAll(" ", "").toLowerCase()).toList();
-        String lower_str = str.replaceAll(" ", "").toLowerCase();
+        String lowerStr = str.replaceAll(" ", "").toLowerCase();
         if (str.matches("\\d+")) { // Single number case
             int index = Integer.parseInt(str) - 1;
             if (index >= 0 && index < filteredList.size()) {
@@ -86,10 +101,10 @@ public class GameList implements IGameList {
                     this.listOfGames.add(filteredList.get(index).getName());
                 }
             }
-        } else if (filteredLowerList.contains(lower_str)) {
-            int index = filteredLowerList.indexOf(lower_str);
+        } else if (filteredLowerList.contains(lowerStr)) {
+            int index = filteredLowerList.indexOf(lowerStr);
             this.listOfGames.add(filteredList.get(index).getName());
-        } else if (lower_str.equals("all")) {
+        } else if (lowerStr.equals("all")) {
             for (BoardGame boardGame : filteredList) {
                 this.listOfGames.add(boardGame.getName());
             }
@@ -98,10 +113,15 @@ public class GameList implements IGameList {
         }
     }
 
+    /**
+     * Removes a single game or multiple games from the games list.
+     * @param str The string to parse and remove games from the list.
+     * @throws IllegalArgumentException if the argument is illegal
+     */
     @Override
     public void removeFromList(String str) throws IllegalArgumentException {
         // TODO Auto-generated method stub
-        String lower_str = str.replaceAll(" ", "").toLowerCase();
+        String lowerStr = str.replaceAll(" ", "").toLowerCase();
         List<String> gamesList = this.getGameNames();
         List<String> gamesLowerList = this.getGameNames().stream()
                 .map(game -> game.replaceAll(" ", "").toLowerCase()).toList();
@@ -127,10 +147,10 @@ public class GameList implements IGameList {
                     this.listOfGames.remove(gamesList.get(index));
                 }
             }
-        } else if (gamesLowerList.contains(lower_str)) {
-            int index = gamesLowerList.indexOf(lower_str);
+        } else if (gamesLowerList.contains(lowerStr)) {
+            int index = gamesLowerList.indexOf(lowerStr);
             this.listOfGames.remove(gamesList.get(index));
-        } else if (lower_str.equals("all")) {
+        } else if (lowerStr.equals("all")) {
             for (String game : gamesList) {
                 this.listOfGames.remove(game);
             }
