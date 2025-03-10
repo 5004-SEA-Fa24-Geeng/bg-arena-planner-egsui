@@ -277,11 +277,7 @@ As a reminder, deeper thinking questions are meant to require some research and 
 
 <br>Localization applies to any product or service targeting diverse audiences with different cultural backgrounds. It's not just about translating words; it's about adapting your software to feel natural, relevant, and easy to use for people from various cultures and languages. This is how you can effectively reach new customers.
 
-However, proper localization is not an easy task. Failing to localize properly can lead to business losses, a tarnished reputation, or even the complete loss of markets. To avoid these negative consequences, it's important to adopt strategies like using separate resource files, ensuring that images and symbols are culturally appropriate, and planning with the locale in mind, among others.
-
-Reference:
-<br>[1] https://www.techtarget.com/searchcio/definition/localization
-<br>[2] https://lokalise.com/blog/software-localization/ectly can lead to business losses, a tarnished reputation, or even the complete loss of markets. To avoid these negative consequences, it's important to adopt strategies like using separate resource files, ensuring that images and symbols are culturally appropriate, and planning with the locale in mind.
+However, proper localization is not an easy task. Failing to localize correctly can lead to business losses, a tarnished reputation, or even the complete loss of markets. To avoid these negative consequences, it's important to adopt strategies like using separate resource files, ensuring that images and symbols are culturally appropriate, and planning with the locale in mind.
 
 Reference:
 <br>[1] https://www.techtarget.com/searchcio/definition/localization
