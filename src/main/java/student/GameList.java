@@ -55,7 +55,6 @@ public class GameList implements IGameList {
      */
     @Override
     public void saveGame(String filename) {
-        // TODO Auto-generated method stub
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (String name : this.getGameNames()) {
                 writer.write(name);
@@ -120,7 +119,6 @@ public class GameList implements IGameList {
      */
     @Override
     public void removeFromList(String str) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
         String lowerStr = str.replaceAll(" ", "").toLowerCase();
         List<String> gamesList = this.getGameNames();
         List<String> gamesLowerList = this.getGameNames().stream()

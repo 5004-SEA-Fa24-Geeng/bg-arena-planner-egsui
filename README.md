@@ -5,17 +5,18 @@ Github Account name: egsui
 
 Link to Assignment on Github: https://github.com/5004-SEA-Fa24-Geeng/bg-arena-planner-egsui/tree/main
 
-How many hours did it take you to complete this assignment (estimate)? 
+How many hours did it take you to complete this assignment (estimate)? 15hr
 
 Did you collaborate with any other students/TAs/Professors? No.
   
 Did you use any external resources (you do not have to cite in class material)? (Cite them below)
 
-* one row per resource
+* https://www.w3schools.com/java/java_regex.asp
+* https://www.w3schools.com/java/java_ref_string.asp
 
 
-(Optional) What was your favorite part of the assignment?
+(Optional) What was your favorite part of the assignment? Read and understand the given code base.
 
-(Optional) How would you improve the assignment?
+(Optional) How would you improve the assignment? To improve the assignment, I would like to add more edge test cases to ensure robustness and correctness. 
 
 ---
