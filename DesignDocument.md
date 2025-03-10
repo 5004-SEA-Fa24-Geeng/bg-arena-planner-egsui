@@ -249,7 +249,189 @@ You should feel free to number your brainstorm.
 Go through your completed code, and update your class diagram to reflect the final design. Make sure you check the file in the browser on github.com to make sure it is rendering correctly. It is normal that the two diagrams don't match! Rarely (though possible) is your initial design perfect. 
 
 For the final design, you just need to do a single diagram that includes both the original classes and the classes you added. 
+```mermaid
+---
+BGArenaPlanner
+---
+classDiagram
+    direction TB
+    class BGArenaPlanner {
+        - static final String DEFAULT_COLLECTION
+        - BGArenaPlanner()
+        + static void main(String[] args)
+    }
 
+    class IPlanner {
+        + filter(String filter) Stream~BoardGame~
+        + filter(String filter, GameData sortOn) Stream~BoardGame~
+        + filter(String filter, GameData sortOn, boolean ascending) Stream~BoardGame~
+    }
+
+    class Planner {
+        - final Set~BoardGame~ games
+        - Set~BoardGame~ filteredGames
+        + Planner(Set~BoardGame~ games)
+        + getFilteredGamesCount() int
+        + filter(String filter) Stream~BoardGame~
+        - filterByFilters(String filter) Set~BoardGame
+        + filter(String filter, GameData sortOn) Stream~BoardGame~
+        + filter(String filter, GameData sortOn, boolean ascending) Stream~BoardGame~
+        + reset() void
+    }
+
+    class IGameList {
+        + String ADD_ALL
+        + List~String~ getGameNames()
+        + clear() void
+        + count() int
+        + saveGame(String filename) void
+        + addToList(String str, Stream~BoardGame~ filtered) void
+        + removeFromList(String str) void
+    }
+
+    class GameList {
+        - Set~String~ listOfGames
+        + GameList()
+        + getGameNames() List~String~
+        + clear() void
+        + count() int
+        + saveGame(String filename) void
+        + addToList(String str, Stream~BoardGame~ filtered) void
+        + removeFromList(String str) void
+    }
+
+    class ConsoleApp {
+        - static final Scanner IN
+        - static final String DEFAULT_FILENAME
+        - static final Random RND
+        - Scanner current
+        - final IGameList gameList
+        - final IPlanner planner
+        + ConsoleApp(IGameList gameList, IPlanner planner)
+        + start() void
+        - randomNumber() void
+        - processHelp() void
+        - processFilter() void
+        - static printFilterStream(Stream~BoardGame~ games, GameData sortON) void
+        - processListCommands() void
+        - printCurrentList() void
+        - nextCommand() ConsoleText
+        - remainder() String
+        - static getInput(String format, Object... args) String
+        - static printOutput(String format, Object... output) void
+    }
+
+    class ConsoleText {
+        WELCOME, HELP, INVALID, GOODBYE, PROMPT,NO_FILTER, NO_GAMES_LIST,
+        FILTERED_CLEAR, LIST_HELP, FILTER_HELP,INVALID_LIST, EASTER_EGG,
+        CMD_EASTER_EGG, CMD_EXIT, CMD_HELP, CMD_QUESTION, CMD_FILTER,
+        CMD_LIST,CMD_SHOW, CMD_ADD, CMD_REMOVE, CMD_CLEAR, CMD_SAVE,
+        CMD_OPTION_ALL, CMD_SORT_OPTION, CMD_SORT_OPTION_DIRECTION_ASC,
+        CMD_SORT_OPTION_DIRECTION_DESC
+        - static final Properties CTEXT
+        + toString() String
+        + fromString(String str) ConsoleText
+    }
+
+    class GamesLoader {
+        - static final String DELIMITER
+        - GamesLoader()
+        + static loadGamesFile(String filename) Set~BoardGame~
+        - static toBoardGame(String line, Map~GameData, Integer~ columnMap) BoardGame
+        - static processHeader(String header) Map~GameData, Integer~
+    }
+
+    class BoardGame {
+        - final String name
+        - final int id
+        - final int minPlayers
+        - final int maxPlayers
+        - final int maxPlayTime
+        - final int minPlayTime
+        - final double difficulty
+        - final int rank
+        - final double averageRating
+        - final int yearPublished
+        + BoardGame(String name, int id, int minPlayers, int maxPlayers, int minPlayTime, int maxPlayTime, double difficulty, int rank, double averageRating, int yearPublished)
+        + getName() String
+        + getId() int
+        + getMinPlayers() int
+        + getMaxPlayers() int
+        + getMaxPlayTime() int
+        + getMinPlayTime() int
+        + getDifficulty() double
+        + getRank() int
+        + getRating() double
+        + getYearPublished() int
+        + toStringWithInfo(GameData col) String
+        + toString() String
+        + equals(Object obj) boolean
+        + hashCode() int
+        + static main(String[] args) void
+    }
+
+    class GameData {
+        - final columnName String
+        NAME("objectname"), ID("objectid") ,
+        RATING("average"), DIFFICULTY("avgweight") ,
+        RANK("rank"), MIN_PLAYERS("minplayers"), MAX_PLAYERS("maxplayers") ,
+        MIN_TIME("minplaytime"), MAX_TIME("maxplaytime"), YEAR("yearpublished")
+        + GameData(String columnName)
+        + getColumnName() String
+        + static fromColumnName(String columnName) GameData
+        + static fromString(String name) GameData
+    }
+
+    class Operations {
+        - final String operator
+        EQUALS("=="), NOT_EQUALS("!="), GREATER_THAN("&gt;"), LESS_THAN("&lt;"), GREATER_THAN_EQUALS("&gt;=") ,
+        LESS_THAN_EQUALS("&lt;="), CONTAINS("~=")
+        + Operations(String operator)
+        + getOperator() String
+        + static fromOperator(String operator) Operations
+        + static getOperatorFromStr(String str) Operations
+    }
+    
+    class Filters {
+        - Filters()
+        + static filter(BoardGame game, GameData column, Operations op, String value) boolean
+        - static filterString(String gameData, Operations op, String value) boolean
+        - static filterNumber(double gameData, Operations op, String value) boolean
+    }
+    
+    class Sorts {
+        - Sorts()
+        + static getSortType(GameData sortOn, boolean asc) Comparator~BoardGame~
+    }
+
+    <<interface>> IPlanner
+    <<interface>> IGameList
+    <<enum>> ConsoleText
+    <<enum>> GameData
+    <<enum>> Operations
+
+    BGArenaPlanner --> ConsoleApp
+    BGArenaPlanner --> IGameList
+    ConsoleApp o-- IPlanner
+    ConsoleApp o-- IGameList
+    BGArenaPlanner --> GamesLoader
+    BoardGame <-- GamesLoader : creates
+    BGArenaPlanner --> IPlanner
+    IGameList <|.. GameList : implements
+    IPlanner <|.. Planner : implements
+    ConsoleApp *-- ConsoleText
+    ConsoleApp --> GameData
+    GamesLoader --> GameData
+    BoardGame --> GameData
+    Planner o-- BoardGame
+    Planner --> Filters
+    Planner --> Sorts
+    Filters --> GameData
+    Sorts --> GameData
+    Operations <-- Filters
+    Operations <-- Planner
+
+```
 > [!WARNING]
 > If you resubmit your assignment for manual grading, this is a section that often needs updating. You should double check with every resubmit to make sure it is up to date.
 
@@ -261,4 +443,5 @@ For the final design, you just need to do a single diagram that includes both th
 > [!IMPORTANT]
 > The value of reflective writing has been highly researched and documented within computer science, from learning to information to showing higher salaries in the workplace. For this next part, we encourage you to take time, and truly focus on your retrospective.
 
-Take time to reflect on how your design has changed. Write in *prose* (i.e. do not bullet point your answers - it matters in how our brain processes the information). Make sure to include what were some major changes, and why you made them. What did you learn from this process? What would you do differently next time? What was the most challenging part of this process? For most students, it will be a paragraph or two. 
+<br> In my project, I’ve abstracted the filtering operations into a Filters class, which includes static methods to handle filtering for both String and double types. Additionally, I implemented a strategy pattern with a Sorts class. This class contains a getSortType() method that determines the sorting strategy by returning an appropriate Comparator object for the required sorting method.
+<br> The most challenging part of this process has been managing the data processing, ensuring efficiency and flexibility in applying these operations.
