@@ -204,15 +204,19 @@ However, proper localization is not an easy task. Failing to localize corr
 
 7. Rewrite the following as an if else statement inside the empty code block.
     ```java
-    switch (ct) {
-                case CMD_QUESTION: // same as help
-                case CMD_HELP:
-                    processHelp();
-                    break;
-                case INVALID:
-                default:
-                    CONSOLE.printf("%s%n", ConsoleText.INVALID);
-            }
+      class CmdProcessor {
+      private CmdProcessor() {
+             }
+      switch (ct) {
+         case CMD_QUESTION: // same as help
+         case CMD_HELP:
+           processHelp();
+           break;
+         case INVALID:
+         default:
+           CONSOLE.printf("%s%n", ConsoleText.INVALID);
+        }
+      }
     ``` 
 
     ```java
