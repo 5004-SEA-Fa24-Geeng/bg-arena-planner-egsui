@@ -103,7 +103,7 @@ public class GameList implements IGameList {
         } else if (filteredLowerList.contains(lowerStr)) {
             int index = filteredLowerList.indexOf(lowerStr);
             this.listOfGames.add(filteredList.get(index).getName());
-        } else if (lowerStr.equals("all")) {
+        } else if (lowerStr.equals(ADD_ALL)) {
             for (BoardGame boardGame : filteredList) {
                 this.listOfGames.add(boardGame.getName());
             }
@@ -148,7 +148,7 @@ public class GameList implements IGameList {
         } else if (gamesLowerList.contains(lowerStr)) {
             int index = gamesLowerList.indexOf(lowerStr);
             this.listOfGames.remove(gamesList.get(index));
-        } else if (lowerStr.equals("all")) {
+        } else if (lowerStr.equals(ADD_ALL)) {
             for (String game : gamesList) {
                 this.listOfGames.remove(game);
             }
